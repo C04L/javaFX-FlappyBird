@@ -7,6 +7,10 @@ import javafx.scene.canvas.GraphicsContext;
 public class Bird implements GameObject {
     private int WIDTH = 56;
     private int HEIGHT = 40;
+    private double rotation = 0;
+    private final double MAX_ROTATION_UP = -30; // pointing up 30 degrees
+    private final double MAX_ROTATION_DOWN = 90; // pointing down 90 degrees
+    private final double ROTATION_SPEED = 5; // how quickly rotation changes
     private Asset assets[] = {
         new Asset("/images/bird1.png", WIDTH, HEIGHT),
         new Asset("/images/bird2.png", WIDTH, HEIGHT),
@@ -15,7 +19,7 @@ public class Bird implements GameObject {
     private Sprite sprite;
     private int currentAssetIndex = 0;
     private long prevTime = 0;
-    private float terminalVel = 8;
+    private float terminalVel = 5;
     private double screenHeight;
     private GameState gameState = GameState.getInstance();
 
@@ -30,7 +34,7 @@ public class Bird implements GameObject {
     }
 
     public void jumpHandler() {
-        sprite.setVelY(-8);
+        sprite.setVelY(-6);
     }
 
     public void update(long now) {
@@ -56,6 +60,9 @@ public class Bird implements GameObject {
             updateBirdPlaying();
         }
 
+        // Add this line to update rotation
+        updateRotation();
+
         sprite.update();
     }
 
@@ -77,7 +84,7 @@ public class Bird implements GameObject {
         if (vel >= terminalVel)
             sprite.setVelY(vel + 0.2);
         else
-            sprite.setVelY(vel + 0.44);
+            sprite.setVelY(vel + 0.2);
     }
 
     public void updateBirdFalldown() {
@@ -96,7 +103,39 @@ public class Bird implements GameObject {
     }
 
     public void render() {
-        sprite.render();
+        GraphicsContext ctx = getGraphicsContext();
+
+        // Draw the bird image, centered at the rotation point
+        ctx.drawImage(
+            sprite.getImage(),
+            (double) -WIDTH /2,  // Adjusted X to center the image
+            (double) -HEIGHT /2, // Adjusted Y to center the image
+            WIDTH,
+            HEIGHT
+        );
+
+        // Restore the context to its original state
+        ctx.restore();
+    }
+
+    private GraphicsContext getGraphicsContext() {
+        GraphicsContext ctx = sprite.getContext();
+
+        // Don't use sprite.render() - we'll handle drawing ourselves
+
+        // Save current context state
+        ctx.save();
+
+        // Calculate the center point of the bird
+        double centerX = sprite.getPosX() + (double) WIDTH /2;
+        double centerY = sprite.getPosY() + (double) HEIGHT /2;
+
+        // Translate to the center of the bird
+        ctx.translate(centerX, centerY);
+
+        // Apply rotation
+        ctx.rotate(Math.toRadians(rotation));
+        return ctx;
     }
 
     public double getPosX() {
@@ -106,4 +145,23 @@ public class Bird implements GameObject {
     public double getPosY() {
         return sprite.getPosY();
     }
+
+    private void updateRotation() {
+        double velY = sprite.getVelY();
+
+        if (velY < 0) {
+            // When the bird jumps (negative velocity), quickly rotate upward
+            rotation = MAX_ROTATION_UP;
+        } else {
+            // When falling, gradually rotate downward based on fall speed
+            double targetRotation = Math.min(MAX_ROTATION_DOWN, velY * 8);
+
+            // Gradually approach the target rotation
+            if (rotation < targetRotation) {
+                rotation += ROTATION_SPEED;
+                if (rotation > targetRotation) rotation = targetRotation;
+            }
+        }
+    }
+
 }

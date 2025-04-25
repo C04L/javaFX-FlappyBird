@@ -7,18 +7,18 @@ import javafx.scene.canvas.GraphicsContext;
 import java.util.ArrayList;
 
 public class Floor implements GameObject {
-    private int WIDTH = 336;
-    private int HEIGHT = 112;
-    private Asset asset = new Asset("/images/floor.png", WIDTH, HEIGHT);
-    private ArrayList<Sprite> sprites = new ArrayList<>();
-    private GameState gameState = GameState.getInstance();
+    private final int WIDTH = 336;
+    private final int HEIGHT = 112;
+    private final Asset asset = new Asset("/images/floor.png", WIDTH, HEIGHT);
+    private final ArrayList<Sprite> sprites = new ArrayList<>();
+    private final GameState gameState = GameState.getInstance();
 
     public Floor(double screenWidth, double screenHeight, GraphicsContext ctx) {
         int floorWidth = 0;
         do {
             Sprite floor = new Sprite(asset);
             floor.setPos(floorWidth, screenHeight - HEIGHT);
-            floor.setVel(-2.5, 0);
+            floor.setVel(-1.5, 0);
             floor.setCtx(ctx);
 
             sprites.add(floor);
@@ -31,11 +31,11 @@ public class Floor implements GameObject {
             for (Sprite floor : sprites)
                 floor.update();
 
-            if (sprites.get(0).getPosX() < -WIDTH) {
-                Sprite firstFloor = sprites.get(0);
+            if (sprites.getFirst().getPosX() < -WIDTH) {
+                Sprite firstFloor = sprites.getFirst();
 
-                sprites.remove(0);
-                firstFloor.setPosX(sprites.get(sprites.size() - 1).getPosX() + WIDTH);
+                sprites.removeFirst();
+                firstFloor.setPosX(sprites.getLast().getPosX() + WIDTH);
                 sprites.add(firstFloor);
             }
         }

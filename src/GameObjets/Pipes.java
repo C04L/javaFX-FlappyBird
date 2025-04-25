@@ -8,23 +8,24 @@ import javafx.scene.canvas.GraphicsContext;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Pipes implements GameObject {
-    private int WIDTH = 62;
-    private int HEIGHT = 2000;
-    private Asset assetUp = new Asset("/images/up_pipe.png", WIDTH, HEIGHT);
-    private Asset assetDown = new Asset("/images/down_pipe.png", WIDTH, HEIGHT);
-    private ArrayList<Sprite> spritesUp = new ArrayList<>();
-    private ArrayList<Sprite> spritesDown = new ArrayList<>();
-    private GameState gameState = GameState.getInstance();
+    private final int WIDTH = 62;
+    private final int HEIGHT = 2000;
+    private final Asset assetUp = new Asset("/images/up_pipe.png", WIDTH, HEIGHT);
+    private final Asset assetDown = new Asset("/images/down_pipe.png", WIDTH, HEIGHT);
+    private final ArrayList<Sprite> spritesUp = new ArrayList<>();
+    private final ArrayList<Sprite> spritesDown = new ArrayList<>();
+    private final GameState gameState = GameState.getInstance();
 
-    private double screenHeight, screenWidth;
-    private GraphicsContext ctx;
+    private final double screenHeight;
+    private final double screenWidth;
+    private final GraphicsContext ctx;
 
     public Pipes(double screenWidth, double screenHeight, GraphicsContext ctx) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.ctx = ctx;
 
-        Sprite pipes[] = createPipes(screenWidth + 200);
+        Sprite[] pipes = createPipes(screenWidth + 200);
         gameState.setActivePipes(pipes);
         spritesUp.add(pipes[0]);
         spritesDown.add(pipes[1]);
@@ -51,16 +52,16 @@ public class Pipes implements GameObject {
         for (Sprite pipe : spritesDown)
             pipe.render();
 
-        if (spritesUp.get(spritesUp.size() - 1).getPosX() < screenWidth) {
-            Sprite pipes[] = createPipes(spritesUp.get(spritesUp.size() - 1).getPosX() + 260);
+        if (spritesUp.getLast().getPosX() < screenWidth) {
+            Sprite[] pipes = createPipes(spritesUp.getLast().getPosX() + 260);
       
             spritesUp.add(pipes[0]);
             spritesDown.add(pipes[1]);
         }
     
-        if (spritesUp.get(0).getPosX() < -WIDTH) {
-            spritesUp.remove(0);
-            spritesDown.remove(0);
+        if (spritesUp.getFirst().getPosX() < -WIDTH) {
+            spritesUp.removeFirst();
+            spritesDown.removeFirst();
         }
     }
 
@@ -70,12 +71,12 @@ public class Pipes implements GameObject {
 
         Sprite pipeUp = new Sprite(assetUp);
         pipeUp.setPos(posX, 206 + randomNum);
-        pipeUp.setVel(-2.5, 0);
+        pipeUp.setVel(-1.5, 0);
         pipeUp.setCtx(ctx);
 
         Sprite pipeDown = new Sprite(assetDown);
         pipeDown.setPos(posX, -1954 + randomNum);
-        pipeDown.setVel(-2.5, 0);
+        pipeDown.setVel(-1.5, 0);
         pipeDown.setCtx(ctx);
 
         return new Sprite[] { pipeUp, pipeDown };

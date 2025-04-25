@@ -132,55 +132,11 @@ public class Sprite {
         this.ctx = ctx;
     }
 
-/*    public void setPosXY(double posX, double posY) {
-        this.posX = posX;
-        this.posY = posY;
+    public GraphicsContext getContext() {
+        return this.ctx;
     }
 
-    public double getPosX() {
-        return posX;
+    public Image getImage() {
+        return image;
     }
-
-    public double getPosY() {
-        return posY;
-    }
-
-    public void setvel(double velX, double velY) {
-        this.velX = velX;
-        this.velY = velY;
-    }
-
-    public void addvel(double x, double y) {
-        this.velX += x;
-        this.velY += y;
-    }
-
-    public double getvelX() {
-        return velX;
-    }
-
-    public double getvelY() {
-        return velY;
-    }
-
-    public double getWidth() {
-        return width;
-    }
-
-    public void render(GraphicsContext gc) {
-        gc.drawImage(image, posX, posY);
-    }
-
-    public Rectangle2D getBoundary() {
-        return new Rectangle2D(posX, posY, width, height);
-    }
-
-    public boolean intersectsSprite(View.Sprite s) {
-        return s.getBoundary().intersects(this.getBoundary());
-    }
-
-    public void update(double time) {
-        posX += velX * time;
-        posY += velY * time;
-    }*/
 }
