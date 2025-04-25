@@ -20,6 +20,9 @@ public class Pipes implements GameObject {
     private final double screenWidth;
     private final GraphicsContext ctx;
 
+    private final int PIPE_GAP = 400;
+
+
     public Pipes(double screenWidth, double screenHeight, GraphicsContext ctx) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
@@ -53,7 +56,7 @@ public class Pipes implements GameObject {
             pipe.render();
 
         if (spritesUp.getLast().getPosX() < screenWidth) {
-            Sprite[] pipes = createPipes(spritesUp.getLast().getPosX() + 260);
+            Sprite[] pipes = createPipes(spritesUp.getLast().getPosX() + PIPE_GAP);
       
             spritesUp.add(pipes[0]);
             spritesDown.add(pipes[1]);

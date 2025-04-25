@@ -11,7 +11,6 @@ import javafx.scene.text.Font;
 import javafx.scene.input.KeyCode;
 import javafx.scene.image.Image;
 import javafx.animation.AnimationTimer;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.LinkedHashMap;
 
@@ -35,8 +34,8 @@ public class FlappyBird extends Application {
     private AnimationTimer timer;
 
     public void start(Stage stage) {
-        stage.setTitle("Flappy bird");
-        stage.getIcons().add(new Image("/images/icon.png"));
+        stage.setTitle("Gái alimi tập bay");
+        stage.getIcons().add(new Image("/images/Loading.gif"));
         stage.setMinWidth(minWidth);
         stage.setMinHeight(minHeight);
 

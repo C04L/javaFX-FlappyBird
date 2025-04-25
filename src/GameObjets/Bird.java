@@ -9,8 +9,8 @@ public class Bird implements GameObject {
     private int HEIGHT = 40;
     private double rotation = 0;
     private final double MAX_ROTATION_UP = -30; // pointing up 30 degrees
-    private final double MAX_ROTATION_DOWN = 90; // pointing down 90 degrees
-    private final double ROTATION_SPEED = 5; // how quickly rotation changes
+    private final double MAX_ROTATION_DOWN = 55; // pointing down 90 degrees
+    private final double ROTATION_SPEED = 1.5; // how quickly rotation changes
     private Asset assets[] = {
         new Asset("/images/bird1.png", WIDTH, HEIGHT),
         new Asset("/images/bird2.png", WIDTH, HEIGHT),
@@ -19,7 +19,7 @@ public class Bird implements GameObject {
     private Sprite sprite;
     private int currentAssetIndex = 0;
     private long prevTime = 0;
-    private float terminalVel = 5;
+    private float terminalVel = 5.5f;
     private double screenHeight;
     private GameState gameState = GameState.getInstance();
 
@@ -60,7 +60,7 @@ public class Bird implements GameObject {
             updateBirdPlaying();
         }
 
-        // Add this line to update rotation
+        // Update rotation based on velocity
         updateRotation();
 
         sprite.update();
@@ -76,15 +76,18 @@ public class Bird implements GameObject {
         double offset = amplitude * Math.sin(period * System.currentTimeMillis() / 10000000);
         sprite.setPosY(centerPosY + offset);
         sprite.setVelY(0); // Reset velocity for clean transitions
+
+        // Reset rotation during hovering
+        rotation = 0;
     }
 
     public void updateBirdPlaying() {
         double vel = sprite.getVelY();
 
-        if (vel >= terminalVel)
+        if (vel < terminalVel)
             sprite.setVelY(vel + 0.2);
         else
-            sprite.setVelY(vel + 0.2);
+            sprite.setVelY(terminalVel);
     }
 
     public void updateBirdFalldown() {
@@ -103,39 +106,32 @@ public class Bird implements GameObject {
     }
 
     public void render() {
-        GraphicsContext ctx = getGraphicsContext();
+        GraphicsContext ctx = sprite.getContext();
 
-        // Draw the bird image, centered at the rotation point
+        // Save the current state of the graphics context
+        ctx.save();
+
+        // Calculate the center point of the bird for rotation
+        double centerX = sprite.getPosX() + WIDTH / 2;
+        double centerY = sprite.getPosY() + HEIGHT / 2;
+
+        // Move to the center of the bird
+        ctx.translate(centerX, centerY);
+
+        // Apply rotation
+        ctx.rotate(rotation);
+
+        // Draw the bird image with the center as the reference point
         ctx.drawImage(
             sprite.getImage(),
-            (double) -WIDTH /2,  // Adjusted X to center the image
-            (double) -HEIGHT /2, // Adjusted Y to center the image
+            -WIDTH / 2,  // Offset X to center the image
+            -HEIGHT / 2, // Offset Y to center the image
             WIDTH,
             HEIGHT
         );
 
         // Restore the context to its original state
         ctx.restore();
-    }
-
-    private GraphicsContext getGraphicsContext() {
-        GraphicsContext ctx = sprite.getContext();
-
-        // Don't use sprite.render() - we'll handle drawing ourselves
-
-        // Save current context state
-        ctx.save();
-
-        // Calculate the center point of the bird
-        double centerX = sprite.getPosX() + (double) WIDTH /2;
-        double centerY = sprite.getPosY() + (double) HEIGHT /2;
-
-        // Translate to the center of the bird
-        ctx.translate(centerX, centerY);
-
-        // Apply rotation
-        ctx.rotate(Math.toRadians(rotation));
-        return ctx;
     }
 
     public double getPosX() {
@@ -148,6 +144,12 @@ public class Bird implements GameObject {
 
     private void updateRotation() {
         double velY = sprite.getVelY();
+
+        if (!gameState.isGameStarted() && !gameState.isGameEnded()) {
+            // Keep bird level when hovering in the start screen
+            rotation = 0;
+            return;
+        }
 
         if (velY < 0) {
             // When the bird jumps (negative velocity), quickly rotate upward
@@ -163,5 +165,4 @@ public class Bird implements GameObject {
             }
         }
     }
-
 }
