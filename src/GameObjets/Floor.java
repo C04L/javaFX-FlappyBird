@@ -1,11 +1,17 @@
-import java.util.ArrayList;
+package GameObjets;
+
+import View.Asset;
+import View.Sprite;
 import javafx.scene.canvas.GraphicsContext;
 
-class Floor implements GameObject {
+import java.util.ArrayList;
+
+public class Floor implements GameObject {
     private int WIDTH = 336;
     private int HEIGHT = 112;
     private Asset asset = new Asset("/images/floor.png", WIDTH, HEIGHT);
     private ArrayList<Sprite> sprites = new ArrayList<>();
+    private GameState gameState = GameState.getInstance();
 
     public Floor(double screenWidth, double screenHeight, GraphicsContext ctx) {
         int floorWidth = 0;
@@ -21,7 +27,7 @@ class Floor implements GameObject {
     }
 
     public void update(long now) {
-        if (FlappyBird.gameStarted) {        
+        if (gameState.isGameStarted()) {
             for (Sprite floor : sprites)
                 floor.update();
 
@@ -29,7 +35,7 @@ class Floor implements GameObject {
                 Sprite firstFloor = sprites.get(0);
 
                 sprites.remove(0);
-                firstFloor.setPosX( sprites.get( sprites.size() - 1 ).getPosX() + WIDTH );
+                firstFloor.setPosX(sprites.get(sprites.size() - 1).getPosX() + WIDTH);
                 sprites.add(firstFloor);
             }
         }

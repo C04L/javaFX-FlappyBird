@@ -1,7 +1,13 @@
+package GameObjets;
+
 import java.util.ArrayList;
+
+import View.Asset;
+import View.Sprite;
 import javafx.scene.canvas.GraphicsContext;
 
-class Background implements GameObject {
+
+public class Background implements GameObject{
     private int WIDTH = 288;
     private int HEIGHT = 512;
     private Asset asset = new Asset("/images/background.png", WIDTH, HEIGHT);

@@ -1,3 +1,5 @@
+import GameObjets.*;
+import GameObjets.GameObject;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -14,7 +16,7 @@ import java.util.Map;
 import java.util.LinkedHashMap;
 
 public class FlappyBird extends Application {
- 
+
     private Scene scene;
     private GraphicsContext ctx;
 
@@ -28,14 +30,9 @@ public class FlappyBird extends Application {
     public static Map<String, GameObject> gameObjects = new LinkedHashMap<String, GameObject>();
     private Bird bird;
     private Restart restart;
-    public static Sprite activePipes[];
+    private GameState gameState = GameState.getInstance();
 
     private AnimationTimer timer;
-    public static boolean gameStarted = false;
-    public static boolean gameEnded = false;
-
-    public static int score = 0;
-    public static int highscore = 0;
 
     public void start(Stage stage) {
         stage.setTitle("Flappy bird");
@@ -86,14 +83,11 @@ public class FlappyBird extends Application {
     }
 
     private void inputHandler(double posX, double posY) {
-        if (!gameEnded) {
+        if (!gameState.isGameEnded()) {
             bird.jumpHandler();
-            gameStarted = true;
+            gameState.setGameStarted(true);
         } else if (posX == -1 && posY == -1 || restart.checkClick(posX, posY)) {
-            gameStarted = false;
-            gameEnded = false;
-
-            FlappyBird.score = 0;
+            gameState.resetGame();
             initRender();
         }
     }
@@ -107,15 +101,16 @@ public class FlappyBird extends Application {
         gameObjects.clear();
 
         gameObjects.put("background",   new Background(width, height, ctx));
-        gameObjects.put("pipes",        new Pipes(width, height, ctx));
+        Pipes pipes = new Pipes(width, height, ctx);
+        gameObjects.put("pipes",        pipes);
         gameObjects.put("floor",        new Floor(width, height, ctx));
 
-        restart = new Restart(width, height, ctx);
         bird = new Bird(width, height, ctx);
+        restart = new Restart(width, height, ctx);
 
         gameObjects.put("bird",         bird);
         gameObjects.put("restart",      restart);
-        gameObjects.put("score",        new Score(width, height, ctx));
+        gameObjects.put("score",        new Score(width, height, ctx, appFont, appColor, bird));
         gameObjects.put("title",        new Title(width, height, ctx));
         gameObjects.put("gameover",     new GameOver(width, height, ctx));
     }

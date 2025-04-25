@@ -1,11 +1,16 @@
-import java.util.ArrayList;
+package GameObjets;
+
+import View.Asset;
+import View.Sprite;
 import javafx.scene.canvas.GraphicsContext;
 
-class Title implements GameObject {
-    private int WIDTH = 178;
-    private int HEIGHT = 48;
+
+public class Title implements GameObject {
+    private final int WIDTH = 178;
+    private final int HEIGHT = 48;
     private Asset asset = new Asset("/images/title.png", WIDTH, HEIGHT);
     private Sprite sprite;
+    private GameState gameState = GameState.getInstance();
 
     public Title(double screenWidth, double screenHeight, GraphicsContext ctx) {
         sprite = new Sprite(asset);
@@ -19,7 +24,7 @@ class Title implements GameObject {
     }
 
     public void render() {
-        if (!FlappyBird.gameStarted && !FlappyBird.gameEnded)
+        if (!gameState.isGameStarted() && !gameState.isGameEnded())
             sprite.render();
     }
 }

@@ -1,14 +1,20 @@
+package GameObjets;
+
 import java.util.ArrayList;
+
+import View.Asset;
+import View.Sprite;
 import javafx.scene.canvas.GraphicsContext;
 import java.util.concurrent.ThreadLocalRandom;
 
-class Pipes implements GameObject {
+public class Pipes implements GameObject {
     private int WIDTH = 62;
     private int HEIGHT = 2000;
     private Asset assetUp = new Asset("/images/up_pipe.png", WIDTH, HEIGHT);
     private Asset assetDown = new Asset("/images/down_pipe.png", WIDTH, HEIGHT);
     private ArrayList<Sprite> spritesUp = new ArrayList<>();
     private ArrayList<Sprite> spritesDown = new ArrayList<>();
+    private GameState gameState = GameState.getInstance();
 
     private double screenHeight, screenWidth;
     private GraphicsContext ctx;
@@ -19,19 +25,20 @@ class Pipes implements GameObject {
         this.ctx = ctx;
 
         Sprite pipes[] = createPipes(screenWidth + 200);
-        FlappyBird.activePipes = pipes;
+        gameState.setActivePipes(pipes);
         spritesUp.add(pipes[0]);
         spritesDown.add(pipes[1]);
     }
 
     public void update(long now) {
-        if (FlappyBird.gameStarted) {
+        if (gameState.isGameStarted()) {
             for (int i = 0; i < spritesUp.size(); i++) {
                 spritesUp.get(i).update();
                 spritesDown.get(i).update();
 
-                if (FlappyBird.activePipes[0].getPosX() + WIDTH < screenWidth / 2 - 56) {
-                    FlappyBird.activePipes = new Sprite[] { spritesUp.get(i), spritesDown.get(i) };
+                Sprite[] activePipes = gameState.getActivePipes();
+                if (activePipes != null && activePipes[0].getPosX() + WIDTH < screenWidth / 2 - 56) {
+                    gameState.setActivePipes(new Sprite[] { spritesUp.get(i), spritesDown.get(i) });
                 }
             }
         }
@@ -44,8 +51,8 @@ class Pipes implements GameObject {
         for (Sprite pipe : spritesDown)
             pipe.render();
 
-        if (spritesUp.get( spritesUp.size() - 1 ).getPosX() < screenWidth) {
-            Sprite pipes[] = createPipes( spritesUp.get( spritesUp.size() - 1 ).getPosX() + 260 );
+        if (spritesUp.get(spritesUp.size() - 1).getPosX() < screenWidth) {
+            Sprite pipes[] = createPipes(spritesUp.get(spritesUp.size() - 1).getPosX() + 260);
       
             spritesUp.add(pipes[0]);
             spritesDown.add(pipes[1]);

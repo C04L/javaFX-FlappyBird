@@ -1,11 +1,20 @@
+package GameObjets;
+
+import java.util.ArrayList;
+
+import View.Asset;
+import View.Sprite;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.geometry.Rectangle2D;
 import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 
-class GameOver implements GameObject {
+public class GameOver implements GameObject {
     private int WIDTH = 205;
     private int HEIGHT = 55;
     private Asset asset = new Asset("/images/game_over.png", WIDTH, HEIGHT);
     private Sprite sprite;
+    private GameState gameState = GameState.getInstance();
 
     public GameOver(double screenWidth, double screenHeight, GraphicsContext ctx) {
         sprite = new Sprite(asset);
@@ -19,7 +28,8 @@ class GameOver implements GameObject {
     }
 
     public void render() {
-        if (FlappyBird.gameEnded)
+        if (gameState.isGameEnded())
             sprite.render();
     }
 }
+

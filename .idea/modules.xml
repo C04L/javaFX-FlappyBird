@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/javaFX-FlappyBird.iml" filepath="$PROJECT_DIR$/javaFX-FlappyBird.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../Download/openjfx-24.0.1_windows-x64_bin-sdk/javafx-sdk-24.0.1/lib/lib.iml" filepath="$PROJECT_DIR$/../../Download/openjfx-24.0.1_windows-x64_bin-sdk/javafx-sdk-24.0.1/lib/lib.iml" />
+    </modules>
+  </component>
+</project>

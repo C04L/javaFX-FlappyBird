@@ -1,7 +1,10 @@
-import java.util.ArrayList;
+package GameObjets;
+
+import View.Asset;
+import View.Sprite;
 import javafx.scene.canvas.GraphicsContext;
 
-class Bird implements GameObject {
+public class Bird implements GameObject {
     private int WIDTH = 56;
     private int HEIGHT = 40;
     private Asset assets[] = {
@@ -13,16 +16,15 @@ class Bird implements GameObject {
     private int currentAssetIndex = 0;
     private long prevTime = 0;
     private float terminalVel = 8;
-    private float shiftMax = 10;
-    private float shiftDelta = 0;
     private double screenHeight;
+    private GameState gameState = GameState.getInstance();
 
     public Bird(double screenWidth, double screenHeight, GraphicsContext ctx) {
         this.screenHeight = screenHeight;
 
         sprite = new Sprite(assets[currentAssetIndex]);
         sprite.setPosX(screenWidth / 2 - WIDTH / 2);
-        sprite.setPosY( FlappyBird.gameEnded ? screenHeight - 112 - HEIGHT : (screenHeight - 112) / 2 );
+        sprite.setPosY(gameState.isGameEnded() ? screenHeight - 112 - HEIGHT : (screenHeight - 112) / 2);
         sprite.setVel(0, 0);
         sprite.setCtx(ctx);
     }
@@ -32,23 +34,23 @@ class Bird implements GameObject {
     }
 
     public void update(long now) {
-        if (!FlappyBird.gameStarted && !FlappyBird.gameEnded){
+        if (!gameState.isGameStarted() && !gameState.isGameEnded()) {
             updateBirdHovering();
-        } else if (FlappyBird.gameEnded) {
+        } else if (gameState.isGameEnded()) {
             updateBirdFalldown();
-        } else if (FlappyBird.gameStarted) {
+        } else if (gameState.isGameStarted()) {
             if (now - prevTime > 90000000) {
                 updateSprite();
                 prevTime = now;
             }
 
+            Sprite[] activePipes = gameState.getActivePipes();
             if ((sprite.getPosY() + HEIGHT) > (screenHeight - 112) ||
-                sprite.intersects(FlappyBird.activePipes[0]) ||
-                sprite.intersects(FlappyBird.activePipes[1])
-                ) {
-                
-                FlappyBird.gameStarted = false;
-                FlappyBird.gameEnded = true;
+                (activePipes != null && activePipes.length >= 2 &&
+                 (sprite.intersects(activePipes[0]) || sprite.intersects(activePipes[1])))) {
+
+                gameState.setGameStarted(false);
+                gameState.setGameEnded(true);
             }
 
             updateBirdPlaying();
@@ -58,56 +60,15 @@ class Bird implements GameObject {
     }
 
     public void updateBirdHovering() {
-        double vel = sprite.getVelY();
+        // Simpler hover effect using time-based animation
+        double centerPosY = (screenHeight - 112) / 2;
+        double amplitude = 10;
+        double period = 0.05;
 
-        //disgusting, i know
-        //but look, its, like, adaptive or what
-        //bird can smoothly transition to this state from any posY
-        //idk, it works dont touch it
-        if (shiftDelta == 0) {
-            sprite.setVelY(0.5);
-            shiftDelta += 0.5;
-        } else if (shiftDelta > 0) {
-            if (vel > 0.1) {            
-                if (shiftDelta < shiftMax / 2) {
-                    float shift = (float) (vel * 1.06);
-                    sprite.setVelY(shift);
-                    shiftDelta += shift;
-                } else {
-                    float shift = (float) (vel * 0.8);
-                    sprite.setVelY(shift);
-                    shiftDelta += shift;
-                }
-            } else if (vel < 0.1) {
-                if (vel > 0) {
-                    sprite.setVelY(-0.5);
-                } else {
-                    float shift = (float) (vel * 1.06);
-                    sprite.setVelY(shift);
-                    shiftDelta += shift;
-                }
-            }
-        } else if (shiftDelta < 0) {
-            if (vel < -0.1) {            
-                if (shiftDelta > -shiftMax / 2) {
-                    float shift = (float) (vel * 1.06);
-                    sprite.setVelY(shift);
-                    shiftDelta += shift;
-                } else {
-                    float shift = (float) (vel * 0.8);
-                    sprite.setVelY(shift);
-                    shiftDelta += shift;
-                }
-            } else if (vel > -0.1) {
-                if (vel < 0) {
-                    sprite.setVelY(0.5);
-                } else {
-                    float shift = (float) (vel * 1.06);
-                    sprite.setVelY(shift);
-                    shiftDelta += shift;
-                }
-            }
-        }
+        // Smooth sinusoidal hover
+        double offset = amplitude * Math.sin(period * System.currentTimeMillis() / 10000000);
+        sprite.setPosY(centerPosY + offset);
+        sprite.setVelY(0); // Reset velocity for clean transitions
     }
 
     public void updateBirdPlaying() {
@@ -126,19 +87,23 @@ class Bird implements GameObject {
         } else {
             updateBirdPlaying();
         }
-        
     }
 
     public void updateSprite() {
-        if (currentAssetIndex == 3)
-            currentAssetIndex = 0;
-
+        // Fix array index bounds issue
+        currentAssetIndex = (currentAssetIndex + 1) % 3;
         sprite.changeImage(assets[currentAssetIndex]);
-
-        currentAssetIndex++;
     }
 
     public void render() {
         sprite.render();
+    }
+
+    public double getPosX() {
+        return sprite.getPosX();
+    }
+
+    public double getPosY() {
+        return sprite.getPosY();
     }
 }

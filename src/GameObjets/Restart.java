@@ -1,12 +1,17 @@
+package GameObjets;
+
+import View.Asset;
+import View.Sprite;
 import javafx.geometry.Rectangle2D;
 import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 
-class Restart implements GameObject {
+public class Restart implements GameObject {
     private int WIDTH = 134;
     private int HEIGHT = 47;
     private Asset asset = new Asset("/images/restart.png", WIDTH, HEIGHT);
     private Sprite sprite;
+    private GameState gameState = GameState.getInstance();
 
     public Restart(double screenWidth, double screenHeight, GraphicsContext ctx) {
         sprite = new Sprite(asset);
@@ -17,14 +22,14 @@ class Restart implements GameObject {
     }
 
     public boolean checkClick(double posX, double posY) {
-        return sprite.intersects( new Rectangle2D(posX, posY, 1, 1) );
+        return sprite.intersects(new Rectangle2D(posX, posY, 1, 1));
     }
 
     public void update(long now) {
     }
 
     public void render() {
-        if (FlappyBird.gameEnded)
+        if (gameState.isGameEnded())
             sprite.render();
     }
 }
