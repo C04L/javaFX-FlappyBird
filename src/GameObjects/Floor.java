@@ -1,4 +1,4 @@
-package GameObjets;
+package GameObjects;
 
 import View.Asset;
 import View.Sprite;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Floor implements GameObject {
     private final int WIDTH = 336;
     private final int HEIGHT = 112;
-    private final Asset asset = new Asset("/images/floor.png", WIDTH, HEIGHT);
+    private final Asset asset = new Asset("/Assets/images/floor.png", WIDTH, HEIGHT);
     private final ArrayList<Sprite> sprites = new ArrayList<>();
     private final GameState gameState = GameState.getInstance();
 

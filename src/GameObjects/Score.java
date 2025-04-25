@@ -1,19 +1,15 @@
-package GameObjets;
-
-import java.util.ArrayList;
+package GameObjects;
 
 import View.Asset;
 import View.Sprite;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.*;
 import javafx.scene.paint.*;
-import javafx.scene.canvas.*;
 import javafx.scene.text.Font;
 
 public class Score implements GameObject {
     private int WIDTH = 108;
     private int HEIGHT = 146;
-    private Asset asset = new Asset("/images/score.png", WIDTH, HEIGHT);
+    private Asset asset = new Asset("/Assets/images/score.png", WIDTH, HEIGHT);
     private Sprite sprite;
     private GraphicsContext ctx;
     private Font appFont;

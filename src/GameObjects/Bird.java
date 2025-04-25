@@ -1,4 +1,4 @@
-package GameObjets;
+package GameObjects;
 
 import View.Asset;
 import View.Sprite;
@@ -12,9 +12,9 @@ public class Bird implements GameObject {
     private final double MAX_ROTATION_DOWN = 55; // pointing down 90 degrees
     private final double ROTATION_SPEED = 1.5; // how quickly rotation changes
     private Asset assets[] = {
-        new Asset("/images/bird1.png", WIDTH, HEIGHT),
-        new Asset("/images/bird2.png", WIDTH, HEIGHT),
-        new Asset("/images/bird3.png", WIDTH, HEIGHT)
+        new Asset("/Assets/images/bird1.png", WIDTH, HEIGHT),
+        new Asset("/Assets/images/bird2.png", WIDTH, HEIGHT),
+        new Asset("/Assets/images/bird3.png", WIDTH, HEIGHT)
     };
     private Sprite sprite;
     private int currentAssetIndex = 0;
@@ -121,16 +121,15 @@ public class Bird implements GameObject {
         // Apply rotation
         ctx.rotate(rotation);
 
-        // Draw the bird image with the center as the reference point
+        // Ném con chim ra giữa màn hình
         ctx.drawImage(
             sprite.getImage(),
-            -WIDTH / 2,  // Offset X to center the image
-            -HEIGHT / 2, // Offset Y to center the image
+            -WIDTH / 2,
+            -HEIGHT / 2,
             WIDTH,
             HEIGHT
         );
 
-        // Restore the context to its original state
         ctx.restore();
     }
 

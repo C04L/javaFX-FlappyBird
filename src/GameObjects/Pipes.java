@@ -1,4 +1,4 @@
-package GameObjets;
+package GameObjects;
 
 import java.util.ArrayList;
 
@@ -10,8 +10,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Pipes implements GameObject {
     private final int WIDTH = 62;
     private final int HEIGHT = 2000;
-    private final Asset assetUp = new Asset("/images/up_pipe.png", WIDTH, HEIGHT);
-    private final Asset assetDown = new Asset("/images/down_pipe.png", WIDTH, HEIGHT);
+    private final Asset assetUp = new Asset("/Assets/images/up_pipe.png", WIDTH, HEIGHT);
+    private final Asset assetDown = new Asset("/Assets/images/down_pipe.png", WIDTH, HEIGHT);
     private final ArrayList<Sprite> spritesUp = new ArrayList<>();
     private final ArrayList<Sprite> spritesDown = new ArrayList<>();
     private final GameState gameState = GameState.getInstance();

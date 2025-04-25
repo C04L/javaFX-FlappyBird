@@ -1,4 +1,4 @@
-package GameObjets;
+package GameObjects;
 
 import View.Asset;
 import View.Sprite;
@@ -8,7 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 public class Title implements GameObject {
     private final int WIDTH = 178;
     private final int HEIGHT = 48;
-    private Asset asset = new Asset("/images/title.png", WIDTH, HEIGHT);
+    private Asset asset = new Asset("/Assets/images/title.png", WIDTH, HEIGHT);
     private Sprite sprite;
     private GameState gameState = GameState.getInstance();
 

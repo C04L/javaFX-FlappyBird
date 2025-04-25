@@ -1,15 +1,14 @@
-package GameObjets;
+package GameObjects;
 
 import View.Asset;
 import View.Sprite;
 import javafx.geometry.Rectangle2D;
-import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 
 public class Restart implements GameObject {
     private int WIDTH = 134;
     private int HEIGHT = 47;
-    private Asset asset = new Asset("/images/restart.png", WIDTH, HEIGHT);
+    private Asset asset = new Asset("/Assets/images/restart.png", WIDTH, HEIGHT);
     private Sprite sprite;
     private GameState gameState = GameState.getInstance();
 

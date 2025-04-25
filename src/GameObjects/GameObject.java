@@ -1,4 +1,4 @@
-package GameObjets;
+package GameObjects;
 
 public interface GameObject {
     void update(long now);

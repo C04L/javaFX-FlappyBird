@@ -1,5 +1,5 @@
-import GameObjets.*;
-import GameObjets.GameObject;
+import GameObjects.*;
+import GameObjects.GameObject;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -19,7 +19,7 @@ public class FlappyBird extends Application {
     private Scene scene;
     private GraphicsContext ctx;
 
-    public static Font appFont = Font.loadFont(FlappyBird.class.getResource("./fonts/04b_19.ttf").toExternalForm(), 42);
+    public static Font appFont = Font.loadFont(FlappyBird.class.getResource("/Assets/fonts/04b_19.ttf").toExternalForm(), 42);
     public static Color appColor = Color.web("#543847");
     private double width = 450;
     private double height = 600;
@@ -33,9 +33,10 @@ public class FlappyBird extends Application {
 
     private AnimationTimer timer;
 
+    @Override
     public void start(Stage stage) {
         stage.setTitle("Gái alimi tập bay");
-        stage.getIcons().add(new Image("/images/Loading.gif"));
+        stage.getIcons().add(new Image("/Assets/images/Loading.gif"));
         stage.setMinWidth(minWidth);
         stage.setMinHeight(minHeight);
 
@@ -72,7 +73,8 @@ public class FlappyBird extends Application {
 
     private void setInputHandlers(Scene scene) {
         scene.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.SPACE)
+            if (e.getCode() == KeyCode.SPACE
+                || e.getCode() == KeyCode.UP)
                 inputHandler(-1, -1);
         });
 

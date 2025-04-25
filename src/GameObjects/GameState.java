@@ -1,4 +1,4 @@
-package GameObjets;
+package GameObjects;
 
 import View.Sprite;
 

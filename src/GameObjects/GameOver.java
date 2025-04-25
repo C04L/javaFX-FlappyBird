@@ -1,18 +1,13 @@
-package GameObjets;
-
-import java.util.ArrayList;
+package GameObjects;
 
 import View.Asset;
 import View.Sprite;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.geometry.Rectangle2D;
-import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 
 public class GameOver implements GameObject {
     private int WIDTH = 205;
     private int HEIGHT = 55;
-    private Asset asset = new Asset("/images/game_over.png", WIDTH, HEIGHT);
+    private Asset asset = new Asset("/Assets/images/game_over.png", WIDTH, HEIGHT);
     private Sprite sprite;
     private GameState gameState = GameState.getInstance();
 
