@@ -21,13 +21,17 @@ public class Renderer {
     private Color appColor;
     private Difficulty difficulty;
     private SoundButton soundButton;
+    private static Renderer instance;
 
-    public Renderer(double width, double height, GraphicsContext ctx, Font font, Color appColor) {
+    private Renderer() {
+        this.gameState = GameState.getInstance();
+        this.gameObjects = new LinkedHashMap<>();
+    }
+
+    public void initialize(double width, double height, GraphicsContext ctx, Font font, Color appColor) {
         this.width = width;
         this.height = height;
         this.ctx = ctx;
-        this.gameState = GameState.getInstance();
-        this.gameObjects = new LinkedHashMap<>();
         this.appFont = font;
         this.appColor = appColor;
 
@@ -37,6 +41,10 @@ public class Renderer {
     public void setDimensions(double width, double height) {
         this.width = width;
         this.height = height;
+
+        if (soundButton != null) {
+            soundButton.repositionButton(width);
+        }
     }
 
     public void refreshGameObjects() {
@@ -115,5 +123,11 @@ public class Renderer {
 
     public SoundButton getSoundButton() {
         return soundButton;
+    }
+    public static Renderer getInstance() {
+        if (instance == null) {
+            instance = new Renderer();
+        }
+        return instance;
     }
 }

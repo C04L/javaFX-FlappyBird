@@ -31,10 +31,21 @@ public class KeyHandler {
         if (!gameState.isGameStarted()) {
             if (e.getCode() == KeyCode.LEFT) {
                 difficulty.decreaseDifficulty();
+                renderer.refreshGameObjects();
+                updateGameObjectReferences();
             } else if (e.getCode() == KeyCode.RIGHT) {
                 difficulty.increaseDifficulty();
+                renderer.refreshGameObjects();
+                updateGameObjectReferences();
             }
         }
+    }
+
+    private void updateGameObjectReferences() {
+        this.bird = renderer.getBird();
+        this.restart = renderer.getRestart();
+        this.difficulty = renderer.getDifficulty();
+        this.soundButton = renderer.getSoundButton();
     }
 
     public void handleMouseInput(double posX, double posY) {

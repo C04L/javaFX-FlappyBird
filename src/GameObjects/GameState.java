@@ -1,6 +1,7 @@
 package GameObjects;
 
 import Controller.SoundController;
+import View.Renderer;
 import View.Sprite;
 
 public class GameState {
@@ -76,8 +77,10 @@ public class GameState {
     }
 
     public void setDifficulty(int difficulty) {
+        Renderer renderer = Renderer.getInstance();
         System.out.println("Difficulty set to: " + difficulty);
         this.difficulty = difficulty;
+        renderer.updateGameObjects(0);
     }
 
 

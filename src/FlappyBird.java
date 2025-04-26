@@ -14,7 +14,7 @@ import javafx.animation.AnimationTimer;
 
 public class FlappyBird extends Application {
 
-      private Scene scene;
+    private Scene scene;
     private GraphicsContext ctx;
     private Canvas canvas;
     private double width = 450;
@@ -41,7 +41,10 @@ public class FlappyBird extends Application {
         setupScene(stage);
 
         gameState = GameState.getInstance();
-        renderer = new Renderer(width, height, ctx, appFont, appColor);
+
+        renderer = Renderer.getInstance();
+        renderer.initialize(width, height, ctx, appFont, appColor);
+
         controller = new KeyHandler(renderer, width, height);
 
         setupInputHandlers();

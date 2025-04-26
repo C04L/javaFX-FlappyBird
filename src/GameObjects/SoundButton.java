@@ -1,6 +1,7 @@
 package GameObjects;
 
 import View.Asset;
+import View.Renderer;
 import View.Sprite;
 import Controller.SoundController;
 import javafx.geometry.Rectangle2D;
@@ -32,14 +33,17 @@ public class SoundButton implements GameObject {
     }
 
     public void toggleSound() {
+        System.out.println("Sound button clicked! Current sound state: " + soundController.isSoundEnabled());
         soundController.toggleSound();
         sprite.changeImage(soundController.isSoundEnabled() ? soundOnAsset : soundOffAsset);
-        render();
+        Renderer renderer = Renderer.getInstance();
+        renderer.refreshGameObjects();
     }
 
     public void repositionButton(double screenWidth) {
         posX = screenWidth - WIDTH - 10;
         sprite.setPosX(posX);
+        sprite.render();
     }
 
     @Override
