@@ -25,6 +25,8 @@ public class Difficulty implements GameObject {
 
         ctx.setFont(appFont);
         ctx.setFill(appColor);
+
+        this.currentDifficultyIndex = gameState.getDifficulty();
     }
 
     public void increaseDifficulty() {

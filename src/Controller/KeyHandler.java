@@ -55,6 +55,7 @@ public class KeyHandler {
             * */
             bird = renderer.getBird();
             restart = renderer.getRestart();
+            difficulty = renderer.getDifficulty();
         }
     }
 

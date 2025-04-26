@@ -56,15 +56,15 @@ public class Renderer {
         difficulty = new Difficulty(width, height, ctx, appFont, appColor);
 
         switch (gameState.getDifficulty()) {
-            case 1:
+            case 0:
                 bird.setTerminalVel(5f);
                 bird.setJumpVel(-6.5f);
                 break;
-            case 2:
+            case 1:
                 bird.setJumpVel(-6f);
                 bird.setTerminalVel(5.5f);
                 break;
-            case 3:
+            case 2:
                 bird.setJumpVel(-5.5f);
                 bird.setTerminalVel(6f);
                 break;
