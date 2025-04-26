@@ -1,5 +1,6 @@
 package GameObjects;
 
+import Controller.SoundController;
 import View.Asset;
 import View.Sprite;
 import javafx.scene.canvas.GraphicsContext;
@@ -24,6 +25,7 @@ public class Bird implements GameObject {
     private float jumpVel; //Tốc độ nhảy của con bird
     private double screenHeight;
     private GameState gameState = GameState.getInstance();
+    private SoundController soundController = SoundController.getInstance();
 
     public Bird(double screenWidth, double screenHeight, GraphicsContext ctx) {
         this.screenHeight = screenHeight;
@@ -36,7 +38,7 @@ public class Bird implements GameObject {
     }
 
     public void jumpHandler() {
-
+        soundController.playSound("jump");
         System.out.println("Bird jumping! Current vel: " + sprite.getVelY() + ", Setting to: " + jumpVel);
         sprite.setVelY(jumpVel);
     }
