@@ -34,6 +34,7 @@ public class Difficulty implements GameObject {
             } else {
                 currentDifficultyIndex = 0;
             }
+            gameState.setDifficulty(currentDifficultyIndex);
         }
     }
 
@@ -44,6 +45,8 @@ public class Difficulty implements GameObject {
             } else {
                 currentDifficultyIndex = DIFFICULTY_LEVELS.length - 1;
             }
+
+            gameState.setDifficulty(currentDifficultyIndex);
         }
     }
 

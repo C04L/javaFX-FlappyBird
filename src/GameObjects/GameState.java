@@ -71,6 +71,7 @@ public class GameState {
     }
 
     public void setDifficulty(int difficulty) {
+        System.out.println("Difficulty set to: " + difficulty);
         this.difficulty = difficulty;
     }
 
