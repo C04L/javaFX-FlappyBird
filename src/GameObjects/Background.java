@@ -1,3 +1,4 @@
+// Modified Background.java
 package GameObjects;
 
 import java.util.ArrayList;
@@ -6,17 +7,27 @@ import View.Asset;
 import View.Sprite;
 import javafx.scene.canvas.GraphicsContext;
 
-
-public class Background implements GameObject{
+public class Background implements GameObject {
     private final int WIDTH = 288;
     private final int HEIGHT = 512;
-    private Asset asset = new Asset("/Assets/images/background.png", WIDTH, HEIGHT);
-    private final ArrayList<Sprite> sprites = new ArrayList<>();
+    private Asset asset;
+    private ArrayList<Sprite> sprites = new ArrayList<>();
+    private double screenWidth;
+    private double screenHeight;
+    private GraphicsContext ctx;
 
     public Background(double screenWidth, double screenHeight, GraphicsContext ctx) {
-        int backgroundWidth = 0;
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+        this.ctx = ctx;
+        this.asset = new Asset("/Assets/images/background.png", WIDTH, HEIGHT);
 
-//        Đảm bảo cái background sẽ luôn đầy màn hình bằng cách lặp lại cái ảnh
+        createBackgroundSprites();
+    }
+
+    private void createBackgroundSprites() {
+        sprites.clear();
+        int backgroundWidth = 0;
 
         do {
             Sprite background = new Sprite(asset);
@@ -24,8 +35,8 @@ public class Background implements GameObject{
             if ((screenHeight - 112) < HEIGHT)
                 background.resizeImage(WIDTH, HEIGHT);
             else
-                background.resizeImage(WIDTH, screenHeight - 112 );
-            
+                background.resizeImage(WIDTH, screenHeight - 112);
+
             if (screenHeight > HEIGHT)
                 background.setPos(backgroundWidth, 0);
             else
@@ -39,6 +50,12 @@ public class Background implements GameObject{
         } while (backgroundWidth < (screenWidth + WIDTH));
     }
 
+    public void resize(double screenWidth, double screenHeight) {
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+        createBackgroundSprites();
+    }
+
     public void update(long now) {
     }
 
@@ -48,7 +65,9 @@ public class Background implements GameObject{
     }
 
     public void changeImage(String path) {
+        this.asset = new Asset(path, WIDTH, HEIGHT);
         for (Sprite background : sprites)
-            background.changeImage(new Asset(path, WIDTH, HEIGHT));
+            background.changeImage(asset);
+        createBackgroundSprites();
     }
 }

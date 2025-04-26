@@ -42,6 +42,11 @@ public class Renderer {
         this.width = width;
         this.height = height;
 
+        if (gameObjects.containsKey("background")) {
+            Background background = (Background) gameObjects.get("background");
+            background.resize(width, height);
+        }
+
         if (soundButton != null) {
             soundButton.repositionButton(width);
         }
