@@ -10,7 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 public class Background implements GameObject{
     private final int WIDTH = 288;
     private final int HEIGHT = 512;
-    private Asset asset = new Asset("/images/background.png", WIDTH, HEIGHT);
+    private Asset asset = new Asset("/Assets/images/background.png", WIDTH, HEIGHT);
     private final ArrayList<Sprite> sprites = new ArrayList<>();
 
     public Background(double screenWidth, double screenHeight, GraphicsContext ctx) {
