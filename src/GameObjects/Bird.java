@@ -38,7 +38,6 @@ public class Bird implements GameObject {
     }
 
     public void jumpHandler() {
-        soundController.playSound("jump");
         System.out.println("Bird jumping! Current vel: " + sprite.getVelY() + ", Setting to: " + jumpVel);
         sprite.setVelY(jumpVel);
     }

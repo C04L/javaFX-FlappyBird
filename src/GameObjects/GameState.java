@@ -1,18 +1,17 @@
 package GameObjects;
 
+import Controller.SoundController;
 import View.Sprite;
 
-// Place this in the same package as GameObjects
 public class GameState {
     private static GameState instance;
-
-    // Game state
     private boolean gameStarted = false;
     private boolean gameEnded = false;
     private int score = 0;
     private int highscore = 0;
     private Sprite[] activePipes;
     private int difficulty = 0;
+    private SoundController sound = SoundController.getInstance();
 
     private GameState() {}
 
@@ -29,6 +28,9 @@ public class GameState {
 
     public void setGameStarted(boolean gameStarted) {
         this.gameStarted = gameStarted;
+        if (gameStarted) {
+            sound.playBackgroundMusic();
+        }
     }
 
     public boolean isGameEnded() {
@@ -37,6 +39,9 @@ public class GameState {
 
     public void setGameEnded(boolean gameEnded) {
         this.gameEnded = gameEnded;
+        if (gameEnded) {
+            sound.stopBackgroundMusic();
+        }
     }
 
     public int getScore() {

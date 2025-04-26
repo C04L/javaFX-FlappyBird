@@ -1,5 +1,6 @@
 package GameObjects;
 
+import Controller.SoundController;
 import View.Asset;
 import View.Sprite;
 import javafx.scene.canvas.GraphicsContext;
@@ -25,6 +26,7 @@ public class Score implements GameObject {
     private GameState gameState = GameState.getInstance();
     private Bird bird;
     private double screenWidth;
+    private SoundController sound = SoundController.getInstance();
 
     public Score(double screenWidth, double screenHeight, GraphicsContext ctx, Font appFont, Color appColor, Bird bird) {
         this.screenWidth = screenWidth;
@@ -79,6 +81,7 @@ public class Score implements GameObject {
 
             // Đánh dấu chưa được tính điểm với ống mới
             if (activePipes[0].getPosY() != prevActivePipePosY) {
+                sound.playSound("jump");
                 scoreCounted = false;
                 prevActivePipePosY = activePipes[0].getPosY();
             }

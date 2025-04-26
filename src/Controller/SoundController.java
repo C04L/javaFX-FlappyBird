@@ -29,8 +29,13 @@ public class SoundController {
             URL jumpSource = getClass().getResource("/Assets/sounds/hop.m4a");
             if (jumpSource != null) {
                 sounds.put("jump", new MediaPlayer(new Media(jumpSource.toString())));
-            } else {
-                System.err.println("Jump sound file not found.");
+            }
+
+            URL backgroundSource = getClass().getResource("/Assets/sounds/background.mp3");
+            if (backgroundSource != null) {
+                backgroundMusic = new MediaPlayer(new Media(backgroundSource.toString()));
+                backgroundMusic.setCycleCount(MediaPlayer.INDEFINITE);
+                backgroundMusic.setVolume(0.7);
             }
         } catch (Exception e) {
             System.err.println("Error loading sound files: " + e.getMessage());
@@ -41,9 +46,28 @@ public class SoundController {
          if (!soundEnabled) return;
 
         MediaPlayer player = sounds.get(soundName);
+        player.setVolume(0.5);
         if (player != null) {
             player.stop();
             player.play();
         }
     }
+
+    public void playBackgroundMusic() {
+        if (!musicEnabled) return;
+
+        if (backgroundMusic != null) {
+            backgroundMusic.setVolume(0.7);
+            backgroundMusic.play();
+        }
+    }
+
+    public void stopBackgroundMusic() {
+        if (backgroundMusic != null) {
+            backgroundMusic.stop();
+        }
+    }
+
+
+
 }
