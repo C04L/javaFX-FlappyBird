@@ -1,9 +1,6 @@
 package Controller;
 
-import GameObjects.Bird;
-import GameObjects.Difficulty;
-import GameObjects.GameState;
-import GameObjects.Restart;
+import GameObjects.*;
 import View.Renderer;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -14,6 +11,7 @@ public class KeyHandler {
     private Bird bird;
     private Restart restart;
     private Difficulty difficulty;
+    private SoundButton soundButton;
 
     public KeyHandler(Renderer renderer, double width, double height) {
         this.renderer = renderer;
@@ -21,6 +19,7 @@ public class KeyHandler {
         this.bird = renderer.getBird();
         this.restart = renderer.getRestart();
         this.difficulty = renderer.getDifficulty();
+        this.soundButton = renderer.getSoundButton();
     }
 
     public void handleKeyInput(KeyEvent e) {
@@ -39,6 +38,11 @@ public class KeyHandler {
     }
 
     public void handleMouseInput(double posX, double posY) {
+        if (soundButton.checkClick(posX, posY)) {
+            soundButton.toggleSound();
+            return;
+        }
+
         handleInput(posX, posY);
     }
 

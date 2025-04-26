@@ -20,6 +20,7 @@ public class Renderer {
     private Font appFont;
     private Color appColor;
     private Difficulty difficulty;
+    private SoundButton soundButton;
 
     public Renderer(double width, double height, GraphicsContext ctx, Font font, Color appColor) {
         this.width = width;
@@ -54,6 +55,7 @@ public class Renderer {
         bird = new Bird(width, height, ctx);
         restart = new Restart(width, height, ctx);
         difficulty = new Difficulty(width, height, ctx, appFont, appColor);
+        soundButton = new SoundButton(width, height, ctx);
 
         switch (gameState.getDifficulty()) {
             case 0:
@@ -77,6 +79,8 @@ public class Renderer {
         gameObjects.put("title", new Title(width, height, ctx));
         gameObjects.put("gameover", new GameOver(width, height, ctx));
         gameObjects.put("difficulty", difficulty);
+        gameObjects.put(("soundButton"), soundButton);
+
     }
 
     public void render() {
@@ -107,5 +111,9 @@ public class Renderer {
 
     public Difficulty getDifficulty() {
         return difficulty;
+    }
+
+    public SoundButton getSoundButton() {
+        return soundButton;
     }
 }

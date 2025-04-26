@@ -12,7 +12,6 @@ public class SoundController {
     private MediaPlayer backgroundMusic;
 
     private boolean soundEnabled = true;
-    private boolean musicEnabled = true;
     private double soundVolume = 0.7;
 
     public SoundController() {
@@ -54,7 +53,7 @@ public class SoundController {
     }
 
     public void playBackgroundMusic() {
-        if (!musicEnabled) return;
+        if (!soundEnabled) return;
 
         if (backgroundMusic != null) {
             backgroundMusic.setVolume(0.7);
@@ -69,5 +68,11 @@ public class SoundController {
     }
 
 
+    public boolean isSoundEnabled() {
+        return soundEnabled;
+    }
 
+    public void toggleSound() {
+        soundEnabled = !soundEnabled;
+    }
 }
