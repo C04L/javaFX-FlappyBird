@@ -55,7 +55,9 @@ public class Renderer {
         ctx.clearRect(0, 0, width, height);
         gameObjects.clear();
 
-        gameObjects.put("background", new Background(width, height, ctx));
+        Background background = new Background(width, height, ctx);
+
+        gameObjects.put("background", background);
         Pipes pipes = new Pipes(width, height, ctx);
         gameObjects.put("pipes", pipes);
         gameObjects.put("floor", new Floor(width, height, ctx));
@@ -73,10 +75,12 @@ public class Renderer {
             case 1:
                 bird.setJumpVel(-6.5f);
                 bird.setTerminalVel(5f);
+                background.changeImage("/Assets/images/background-md.png");
                 break;
             case 2:
                 bird.setJumpVel(-3.5f);
                 bird.setTerminalVel(7.5f);
+                background.changeImage("/Assets/images/background-ex.png");
                 break;
         }
 

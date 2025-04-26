@@ -46,4 +46,9 @@ public class Background implements GameObject{
         for (Sprite background : sprites)
             background.render();
     }
+
+    public void changeImage(String path) {
+        for (Sprite background : sprites)
+            background.changeImage(new Asset(path, WIDTH, HEIGHT));
+    }
 }

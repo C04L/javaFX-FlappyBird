@@ -40,14 +40,6 @@ public class KeyHandler {
             }
         }
     }
-
-    private void updateGameObjectReferences() {
-        this.bird = renderer.getBird();
-        this.restart = renderer.getRestart();
-        this.difficulty = renderer.getDifficulty();
-        this.soundButton = renderer.getSoundButton();
-    }
-
     public void handleMouseInput(double posX, double posY) {
         if (soundButton.checkClick(posX, posY)) {
             soundButton.toggleSound();
@@ -64,17 +56,26 @@ public class KeyHandler {
         } else if (posX == -1 && posY == -1 || restart.checkClick(posX, posY)) {
             gameState.resetGame();
             renderer.refreshGameObjects();
-
-            /*
-            * Khi end game thì chim sẽ bị xóa -> cần gọi lại instance của chim mới
-            * */
-            bird = renderer.getBird();
-            restart = renderer.getRestart();
-            difficulty = renderer.getDifficulty();
+            updateGameObjectReferences();
         }
     }
 
     public void updateGame(long now) {
         renderer.updateGameObjects(now);
+    }
+
+
+    /*
+    * Sau khi xóa gameObject thông qua refreshGameObjects
+    * thì keyHandler vẫn đang ở instance cũ, hàm này sẽ trỏ lại
+    * handler đến instance mới được khởi tạo
+    *
+    * ĐỪNG SỬA - C04:L
+    * */
+    private void updateGameObjectReferences() {
+        this.bird = renderer.getBird();
+        this.restart = renderer.getRestart();
+        this.difficulty = renderer.getDifficulty();
+        this.soundButton = renderer.getSoundButton();
     }
 }
