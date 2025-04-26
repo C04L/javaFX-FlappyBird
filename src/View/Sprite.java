@@ -47,11 +47,6 @@ public class Sprite {
         posX += velX;
         posY += velY;
     }
-  
-    public void updateTimescaled(int timescale) {
-        posX += velX * timescale;
-        posY += velY * timescale;
-    }
 
     public void render() {
         ctx.drawImage(image, posX, posY);

@@ -8,9 +8,9 @@ public class Bird implements GameObject {
     private int WIDTH = 56;
     private int HEIGHT = 40;
     private double rotation = 0;
-    private final double MAX_ROTATION_UP = -30; // pointing up 30 degrees
-    private final double MAX_ROTATION_DOWN = 55; // pointing down 90 degrees
-    private final double ROTATION_SPEED = 1.5; // how quickly rotation changes
+    private final double MAX_ROTATION_UP = -30;
+    private final double MAX_ROTATION_DOWN = 55;
+    private final double ROTATION_SPEED = 1;
     private Asset assets[] = {
         new Asset("/Assets/images/bird1.png", WIDTH, HEIGHT),
         new Asset("/Assets/images/bird2.png", WIDTH, HEIGHT),
@@ -19,7 +19,7 @@ public class Bird implements GameObject {
     private Sprite sprite;
     private int currentAssetIndex = 0;
     private long prevTime = 0;
-    private float terminalVel = 5.5f;
+    private float terminalVel = 5f; //Tốc độ rơi tối đa của con bird
     private double screenHeight;
     private GameState gameState = GameState.getInstance();
 
@@ -145,17 +145,15 @@ public class Bird implements GameObject {
         double velY = sprite.getVelY();
 
         if (!gameState.isGameStarted() && !gameState.isGameEnded()) {
-            // Keep bird level when hovering in the start screen
             rotation = 0;
             return;
         }
 
         if (velY < 0) {
-            // When the bird jumps (negative velocity), quickly rotate upward
             rotation = MAX_ROTATION_UP;
         } else {
-            // When falling, gradually rotate downward based on fall speed
-            double targetRotation = Math.min(MAX_ROTATION_DOWN, velY * 8);
+            // When
+            double targetRotation = MAX_ROTATION_DOWN;
 
             // Gradually approach the target rotation
             if (rotation < targetRotation) {

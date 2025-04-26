@@ -1,5 +1,6 @@
+import Controller.KeyHandler;
 import GameObjects.*;
-import GameObjects.GameObject;
+import View.Renderer;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -8,28 +9,25 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.input.KeyCode;
 import javafx.scene.image.Image;
 import javafx.animation.AnimationTimer;
-import java.util.Map;
-import java.util.LinkedHashMap;
 
 public class FlappyBird extends Application {
 
-    private Scene scene;
+      private Scene scene;
     private GraphicsContext ctx;
-
-    public static Font appFont = Font.loadFont(FlappyBird.class.getResource("/Assets/fonts/04b_19.ttf").toExternalForm(), 42);
-    public static Color appColor = Color.web("#543847");
+    private Canvas canvas;
     private double width = 450;
     private double height = 600;
     private double minWidth = 365;
     private double minHeight = 412;
 
-    public static Map<String, GameObject> gameObjects = new LinkedHashMap<String, GameObject>();
-    private Bird bird;
-    private Restart restart;
-    private GameState gameState = GameState.getInstance();
+    private final Font appFont = Font.loadFont(FlappyBird.class.getResource("/Assets/fonts/04b_19.ttf").toExternalForm(), 42);
+    private final Color appColor = Color.web("#543847");
+
+    private Renderer renderer;
+    private KeyHandler controller;
+    private GameState gameState;
 
     private AnimationTimer timer;
 
@@ -40,16 +38,22 @@ public class FlappyBird extends Application {
         stage.setMinWidth(minWidth);
         stage.setMinHeight(minHeight);
 
-        setScene(stage);
-        initRender();
+        setupScene(stage);
+
+        gameState = GameState.getInstance();
+        renderer = new Renderer(width, height, ctx, appFont, appColor);
+        controller = new KeyHandler(renderer, width, height);
+
+        setupInputHandlers();
+
         startGameLoop();
 
         stage.show();
     }
 
-    private void setScene(Stage stage) {
+    private void setupScene(Stage stage) {
         Pane pane = new Pane();
-        Canvas canvas = new Canvas();
+        canvas = new Canvas();
         ctx = canvas.getGraphicsContext2D();
 
         canvas.heightProperty().bind(pane.heightProperty());
@@ -57,82 +61,37 @@ public class FlappyBird extends Application {
 
         canvas.widthProperty().addListener((obs, oldVal, newVal) -> {
             width = newVal.doubleValue();
-            resizeHandler();
+            handleResize();
         });
+
         canvas.heightProperty().addListener((obs, oldVal, newVal) -> {
             height = newVal.doubleValue();
-            resizeHandler();
+            handleResize();
         });
 
         pane.getChildren().addAll(canvas);
         scene = new Scene(pane, width, height);
-
-        setInputHandlers(scene);
         stage.setScene(scene);
     }
 
-    private void setInputHandlers(Scene scene) {
-        scene.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.SPACE
-                || e.getCode() == KeyCode.UP)
-                inputHandler(-1, -1);
-        });
-
-        scene.setOnMousePressed(e -> {
-            inputHandler(e.getX(), e.getY());
-        });
+    private void setupInputHandlers() {
+        scene.setOnKeyPressed(e -> controller.handleKeyInput(e));
+        scene.setOnMousePressed(e -> controller.handleMouseInput(e.getX(), e.getY()));
     }
 
-    private void inputHandler(double posX, double posY) {
-        if (!gameState.isGameEnded()) {
-            bird.jumpHandler();
-            gameState.setGameStarted(true);
-        } else if (posX == -1 && posY == -1 || restart.checkClick(posX, posY)) {
-            gameState.resetGame();
-            initRender();
+    private void handleResize() {
+        if (renderer != null) {
+            renderer.setDimensions(width, height);
+            renderer.refreshGameObjects();
         }
-    }
-
-    private void resizeHandler() {
-        initRender();
-    }
-
-    private void initRender() {
-        ctx.clearRect(0, 0, width, height);
-        gameObjects.clear();
-
-        gameObjects.put("background",   new Background(width, height, ctx));
-        Pipes pipes = new Pipes(width, height, ctx);
-        gameObjects.put("pipes",        pipes);
-        gameObjects.put("floor",        new Floor(width, height, ctx));
-
-        bird = new Bird(width, height, ctx);
-        restart = new Restart(width, height, ctx);
-
-        gameObjects.put("bird",         bird);
-        gameObjects.put("restart",      restart);
-        gameObjects.put("score",        new Score(width, height, ctx, appFont, appColor, bird));
-        gameObjects.put("title",        new Title(width, height, ctx));
-        gameObjects.put("gameover",     new GameOver(width, height, ctx));
-    }
-
-    private void updateGame(long now) {
-        for (GameObject gameObject : gameObjects.values())
-            gameObject.update(now);
-    }
-
-    private void renderGame() {
-        ctx.clearRect(0, 0, width, height);
-
-        for (GameObject gameObject : gameObjects.values())
-            gameObject.render();
     }
 
     private void startGameLoop() {
         timer = new AnimationTimer() {
+            @Override
             public void handle(long now) {
-                updateGame(now);
-                renderGame();
+                controller.updateGame(now);
+                renderer.render();
             }
         };
         timer.start();
