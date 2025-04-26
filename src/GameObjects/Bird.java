@@ -4,9 +4,10 @@ import View.Asset;
 import View.Sprite;
 import javafx.scene.canvas.GraphicsContext;
 
+
 public class Bird implements GameObject {
-    private int WIDTH = 56;
-    private int HEIGHT = 40;
+    private final int WIDTH = 56;
+    private final int HEIGHT = 40;
     private double rotation = 0;
     private final double MAX_ROTATION_UP = -30;
     private final double MAX_ROTATION_DOWN = 55;
@@ -20,6 +21,7 @@ public class Bird implements GameObject {
     private int currentAssetIndex = 0;
     private long prevTime = 0;
     private float terminalVel = 5f; //Tốc độ rơi tối đa của con bird
+    private float jumpVel = -6.5f; //Tốc độ nhảy của con bird
     private double screenHeight;
     private GameState gameState = GameState.getInstance();
 
@@ -34,7 +36,7 @@ public class Bird implements GameObject {
     }
 
     public void jumpHandler() {
-        sprite.setVelY(-6);
+        sprite.setVelY(-jumpVel);
     }
 
     public void update(long now) {
@@ -48,6 +50,7 @@ public class Bird implements GameObject {
                 prevTime = now;
             }
 
+
             Sprite[] activePipes = gameState.getActivePipes();
             if ((sprite.getPosY() + HEIGHT) > (screenHeight - 112) ||
                 (activePipes != null && activePipes.length >= 2 &&
@@ -60,24 +63,22 @@ public class Bird implements GameObject {
             updateBirdPlaying();
         }
 
-        // Update rotation based on velocity
         updateRotation();
 
         sprite.update();
     }
 
+//    Chim đứng yên
     public void updateBirdHovering() {
-        // Simpler hover effect using time-based animation
         double centerPosY = (screenHeight - 112) / 2;
         double amplitude = 10;
         double period = 0.05;
 
-        // Smooth sinusoidal hover
+
         double offset = amplitude * Math.sin(period * System.currentTimeMillis() / 10000000);
         sprite.setPosY(centerPosY + offset);
-        sprite.setVelY(0); // Reset velocity for clean transitions
+        sprite.setVelY(0);
 
-        // Reset rotation during hovering
         rotation = 0;
     }
 
@@ -100,25 +101,25 @@ public class Bird implements GameObject {
     }
 
     public void updateSprite() {
-        // Fix array index bounds issue
         currentAssetIndex = (currentAssetIndex + 1) % 3;
         sprite.changeImage(assets[currentAssetIndex]);
     }
 
+
+    /*
+    * Render con chim + xoay tạo cảm giác vật lý :>>
+    * */
     public void render() {
         GraphicsContext ctx = sprite.getContext();
 
-        // Save the current state of the graphics context
         ctx.save();
 
-        // Calculate the center point of the bird for rotation
+//        Tọa độ tâm của con chim
         double centerX = sprite.getPosX() + WIDTH / 2;
         double centerY = sprite.getPosY() + HEIGHT / 2;
 
-        // Move to the center of the bird
         ctx.translate(centerX, centerY);
 
-        // Apply rotation
         ctx.rotate(rotation);
 
         // Ném con chim ra giữa màn hình
@@ -152,14 +153,19 @@ public class Bird implements GameObject {
         if (velY < 0) {
             rotation = MAX_ROTATION_UP;
         } else {
-            // When
             double targetRotation = MAX_ROTATION_DOWN;
-
-            // Gradually approach the target rotation
             if (rotation < targetRotation) {
                 rotation += ROTATION_SPEED;
                 if (rotation > targetRotation) rotation = targetRotation;
             }
         }
+    }
+    
+    public void setTerminalVel(float vel) {
+        this.terminalVel = vel;
+    }
+    
+    public void setJumpVel(float vel) {
+        this.jumpVel = vel;
     }
 }

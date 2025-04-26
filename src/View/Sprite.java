@@ -35,6 +35,7 @@ public class Sprite {
         image = new Image(path, width, height, false, false);
     }
 
+//    Va chạm
     public boolean intersects(Sprite sprite) {
         return sprite.getSize().intersects(this.getSize());
     }

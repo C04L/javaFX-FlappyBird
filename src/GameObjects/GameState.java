@@ -12,11 +12,10 @@ public class GameState {
     private int score = 0;
     private int highscore = 0;
     private Sprite[] activePipes;
+    private int difficulty = 0;
 
-    // Private constructor for singleton
     private GameState() {}
 
-    // Get the singleton instance
     public static GameState getInstance() {
         if (instance == null) {
             instance = new GameState();
@@ -24,7 +23,6 @@ public class GameState {
         return instance;
     }
 
-    // Getters and setters
     public boolean isGameStarted() {
         return gameStarted;
     }
@@ -68,7 +66,15 @@ public class GameState {
         return activePipes;
     }
 
-    // Reset game state
+     public int getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
+
+
     public void resetGame() {
         gameStarted = false;
         gameEnded = false;

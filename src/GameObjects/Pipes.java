@@ -21,7 +21,10 @@ public class Pipes implements GameObject {
     private final GraphicsContext ctx;
 
     private final int PIPE_GAP = 400;
-
+    private final int MIN_VERTICAL_GAP = 160;
+    private final int MAX_VERTICAL_GAP = 250;
+    private final int FLOOR_HEIGHT = 112;
+    private final int MIN_TOP_MARGIN = 50;
 
     public Pipes(double screenWidth, double screenHeight, GraphicsContext ctx) {
         this.screenWidth = screenWidth;
@@ -57,11 +60,11 @@ public class Pipes implements GameObject {
 
         if (spritesUp.getLast().getPosX() < screenWidth) {
             Sprite[] pipes = createPipes(spritesUp.getLast().getPosX() + PIPE_GAP);
-      
+
             spritesUp.add(pipes[0]);
             spritesDown.add(pipes[1]);
         }
-    
+
         if (spritesUp.getFirst().getPosX() < -WIDTH) {
             spritesUp.removeFirst();
             spritesDown.removeFirst();
@@ -69,16 +72,32 @@ public class Pipes implements GameObject {
     }
 
     private Sprite[] createPipes(double posX) {
-        double usableHeight = screenHeight - 364;
-        int randomNum = ThreadLocalRandom.current().nextInt(0, (int) usableHeight + 1);
+        double availableHeight = screenHeight - FLOOR_HEIGHT - MIN_TOP_MARGIN;
+
+        int verticalGapSize = ThreadLocalRandom.current().nextInt(MIN_VERTICAL_GAP, MAX_VERTICAL_GAP + 1);
+
+        int maxGapPosition = (int)(availableHeight - verticalGapSize);
+        int gapPosition = ThreadLocalRandom.current().nextInt(0, maxGapPosition + 1);
+
+        /*
+        * Tọa độ Y được tính 0 từ trên xuống dưới
+        * nên phải tính từ đấy, tọa độ của ống dưới
+        * được tính dựa trên ống trên
+        * 
+        * NOTE: C04:L
+        * */
+
+        double topPipePosition = -(HEIGHT - MIN_TOP_MARGIN - gapPosition);
+        double bottomPipePosition = MIN_TOP_MARGIN + gapPosition + verticalGapSize;
+
 
         Sprite pipeUp = new Sprite(assetUp);
-        pipeUp.setPos(posX, 206 + randomNum);
+        pipeUp.setPos(posX, bottomPipePosition);
         pipeUp.setVel(-1.5, 0);
         pipeUp.setCtx(ctx);
 
         Sprite pipeDown = new Sprite(assetDown);
-        pipeDown.setPos(posX, -1954 + randomNum);
+        pipeDown.setPos(posX, topPipePosition);
         pipeDown.setVel(-1.5, 0);
         pipeDown.setCtx(ctx);
 

@@ -8,13 +8,16 @@ import javafx.scene.canvas.GraphicsContext;
 
 
 public class Background implements GameObject{
-    private int WIDTH = 288;
-    private int HEIGHT = 512;
+    private final int WIDTH = 288;
+    private final int HEIGHT = 512;
     private Asset asset = new Asset("/images/background.png", WIDTH, HEIGHT);
-    private ArrayList<Sprite> sprites = new ArrayList<>();
+    private final ArrayList<Sprite> sprites = new ArrayList<>();
 
     public Background(double screenWidth, double screenHeight, GraphicsContext ctx) {
         int backgroundWidth = 0;
+
+//        Đảm bảo cái background sẽ luôn đầy màn hình bằng cách lặp lại cái ảnh
+
         do {
             Sprite background = new Sprite(asset);
 

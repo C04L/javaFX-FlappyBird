@@ -19,6 +19,7 @@ public class Renderer {
     private GameState gameState;
     private Font appFont;
     private Color appColor;
+    private Difficulty difficulty;
 
     public Renderer(double width, double height, GraphicsContext ctx, Font font, Color appColor) {
         this.width = width;
@@ -52,12 +53,27 @@ public class Renderer {
 
         bird = new Bird(width, height, ctx);
         restart = new Restart(width, height, ctx);
+        difficulty = new Difficulty(width, height, ctx, appFont, appColor);
+
+        switch (gameState.getDifficulty()) {
+            case 1:
+                break;
+            case 2:
+                bird.setJumpVel(6f);
+                bird.setTerminalVel(5.5f);
+            case 3:
+                bird.setJumpVel(5.5f);
+                bird.setTerminalVel(6f);
+                break;
+        }
+
 
         gameObjects.put("bird", bird);
         gameObjects.put("restart", restart);
         gameObjects.put("score", new Score(width, height, ctx, appFont, appColor, bird));
         gameObjects.put("title", new Title(width, height, ctx));
         gameObjects.put("gameover", new GameOver(width, height, ctx));
+        gameObjects.put("difficulty", difficulty);
     }
 
     public void render() {
@@ -84,5 +100,9 @@ public class Renderer {
 
     public Map<String, GameObject> getGameObjects() {
         return gameObjects;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
     }
 }

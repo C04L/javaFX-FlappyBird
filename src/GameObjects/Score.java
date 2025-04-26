@@ -55,22 +55,29 @@ public class Score implements GameObject {
         }
     }
 
+    /*
+    * Tăng điểm nếu đầu chim vượt qua giữa ống
+    * @param now Thời gian hiện tại được truyền vào bởi GameLoop
+    *
+    *                ĐỪNG SỬA - C04:L
+    * */
     public void update(long now) {
         Sprite[] activePipes = gameState.getActivePipes();
         if (gameState.isGameStarted() && !gameState.isGameEnded() && activePipes != null && activePipes.length > 0) {
-            // Check if the bird has passed through the middle of the pipes
+
+//            Vị trí đầu chim
             double birdCenterX = (bird != null) ? bird.getPosX() + 28 : 0;
 
             double pipeX = activePipes[0].getPosX();
-            double pipeCenterX = pipeX + 31; // Half of pipe width
+            double pipeCenterX = pipeX + 31;
 
-            // Score when bird passes the center of the pipe
+
             if (pipeX < prevActivePipePosX && !scoreCounted && birdCenterX > pipeCenterX) {
                 gameState.incrementScore();
                 scoreCounted = true;
             }
 
-            // Reset scoring flag when a new pipe becomes active
+            // Đánh dấu chưa được tính điểm với ống mới
             if (activePipes[0].getPosY() != prevActivePipePosY) {
                 scoreCounted = false;
                 prevActivePipePosY = activePipes[0].getPosY();

@@ -1,6 +1,7 @@
 package Controller;
 
 import GameObjects.Bird;
+import GameObjects.Difficulty;
 import GameObjects.GameState;
 import GameObjects.Restart;
 import View.Renderer;
@@ -12,21 +13,27 @@ public class KeyHandler {
     private GameState gameState;
     private Bird bird;
     private Restart restart;
-    private double width;
-    private double height;
+    private Difficulty difficulty;
 
     public KeyHandler(Renderer renderer, double width, double height) {
         this.renderer = renderer;
-        this.width = width;
-        this.height = height;
         this.gameState = GameState.getInstance();
         this.bird = renderer.getBird();
         this.restart = renderer.getRestart();
+        this.difficulty = renderer.getDifficulty();
     }
 
     public void handleKeyInput(KeyEvent e) {
         if (e.getCode() == KeyCode.SPACE || e.getCode() == KeyCode.UP) {
             handleInput(-1, -1);
+        }
+
+        if (!gameState.isGameStarted()) {
+            if (e.getCode() == KeyCode.LEFT) {
+                difficulty.decreaseDifficulty();
+            } else if (e.getCode() == KeyCode.RIGHT) {
+                difficulty.increaseDifficulty();
+            }
         }
     }
 
