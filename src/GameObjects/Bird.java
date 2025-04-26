@@ -20,8 +20,8 @@ public class Bird implements GameObject {
     private Sprite sprite;
     private int currentAssetIndex = 0;
     private long prevTime = 0;
-    private float terminalVel = 5f; //Tốc độ rơi tối đa của con bird
-    private float jumpVel = -6.5f; //Tốc độ nhảy của con bird
+    private float terminalVel; //Tốc độ rơi tối đa của con bird
+    private float jumpVel; //Tốc độ nhảy của con bird
     private double screenHeight;
     private GameState gameState = GameState.getInstance();
 
@@ -83,6 +83,7 @@ public class Bird implements GameObject {
     }
 
     public void updateBirdPlaying() {
+        System.out.println("Bird jumping! Current vel: " + sprite.getVelY() + ", Setting to: " + jumpVel);
         double vel = sprite.getVelY();
 
         if (vel < terminalVel)
@@ -160,11 +161,11 @@ public class Bird implements GameObject {
             }
         }
     }
-    
+
     public void setTerminalVel(float vel) {
         this.terminalVel = vel;
     }
-    
+
     public void setJumpVel(float vel) {
         this.jumpVel = vel;
     }

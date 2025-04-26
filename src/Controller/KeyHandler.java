@@ -24,6 +24,7 @@ public class KeyHandler {
     }
 
     public void handleKeyInput(KeyEvent e) {
+        System.out.println("Key pressed: " + e.getCode());
         if (e.getCode() == KeyCode.SPACE || e.getCode() == KeyCode.UP) {
             handleInput(-1, -1);
         }

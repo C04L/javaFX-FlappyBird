@@ -75,7 +75,7 @@ public class FlappyBird extends Application {
     }
 
     private void setupInputHandlers() {
-        scene.setOnKeyPressed(e -> controller.handleKeyInput(e));
+        scene.setOnKeyPressed(controller::handleKeyInput);
         scene.setOnMousePressed(e -> controller.handleMouseInput(e.getX(), e.getY()));
     }
 
