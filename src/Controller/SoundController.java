@@ -13,6 +13,7 @@ public class SoundController {
 
     private boolean soundEnabled = true;
     private double soundVolume = 0.7;
+    public static SoundController instance = new SoundController();
 
     public SoundController() {
         sounds = new HashMap<String, MediaPlayer>();
@@ -20,7 +21,10 @@ public class SoundController {
     }
 
     public static SoundController getInstance() {
-        return new SoundController();
+        if (instance == null) {
+            instance = new SoundController();
+        }
+        return instance;
     }
 
     private void initializeSounds() {

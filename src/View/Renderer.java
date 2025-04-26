@@ -55,7 +55,7 @@ public class Renderer {
         bird = new Bird(width, height, ctx);
         restart = new Restart(width, height, ctx);
         difficulty = new Difficulty(width, height, ctx, appFont, appColor);
-        soundButton = new SoundButton(width, height, ctx);
+        soundButton = new SoundButton(width, ctx);
 
         switch (gameState.getDifficulty()) {
             case 0:

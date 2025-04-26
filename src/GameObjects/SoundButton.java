@@ -15,13 +15,12 @@ public class SoundButton implements GameObject {
     private SoundController soundController = SoundController.getInstance();
     private double posX, posY;
 
-    public SoundButton(double screenWidth, double screenHeight, GraphicsContext ctx) {
+    public SoundButton(double screenWidth, GraphicsContext ctx) {
 
-        // Position in top right with some margin
+
         posX = screenWidth - WIDTH - 10;
         posY = 10;
 
-        // Initialize sprite with the correct image based on current sound state
         sprite = new Sprite(soundController.isSoundEnabled() ? soundOnAsset : soundOffAsset);
         sprite.setPos(posX, posY);
         sprite.setVel(0, 0);
@@ -34,8 +33,8 @@ public class SoundButton implements GameObject {
 
     public void toggleSound() {
         soundController.toggleSound();
-        // Update the button image based on new sound state
         sprite.changeImage(soundController.isSoundEnabled() ? soundOnAsset : soundOffAsset);
+        render();
     }
 
     public void repositionButton(double screenWidth) {
@@ -45,7 +44,6 @@ public class SoundButton implements GameObject {
 
     @Override
     public void update(long now) {
-        // No animation needed for this button
     }
 
     @Override
