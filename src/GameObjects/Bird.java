@@ -36,7 +36,9 @@ public class Bird implements GameObject {
     }
 
     public void jumpHandler() {
-        sprite.setVelY(-jumpVel);
+
+        System.out.println("Bird jumping! Current vel: " + sprite.getVelY() + ", Setting to: " + jumpVel);
+        sprite.setVelY(jumpVel);
     }
 
     public void update(long now) {
@@ -60,7 +62,7 @@ public class Bird implements GameObject {
                 gameState.setGameEnded(true);
             }
 
-            updateBirdPlaying();
+            applyGravity();
         }
 
         updateRotation();
@@ -82,8 +84,7 @@ public class Bird implements GameObject {
         rotation = 0;
     }
 
-    public void updateBirdPlaying() {
-        System.out.println("Bird jumping! Current vel: " + sprite.getVelY() + ", Setting to: " + jumpVel);
+    public void applyGravity() {
         double vel = sprite.getVelY();
 
         if (vel < terminalVel)
@@ -97,7 +98,7 @@ public class Bird implements GameObject {
             sprite.setVel(0, 0);
             sprite.setPosY(screenHeight - 112 - HEIGHT);
         } else {
-            updateBirdPlaying();
+            applyGravity();
         }
     }
 
